@@ -5,7 +5,10 @@ services:
     restart: unless-stopped
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8082
       ConnectionStrings__Default: Data Source=/app/Data/plato.db
+    expose:
+      - "8082"
     volumes:
       - plato-data:/app/Data
 
@@ -17,6 +20,8 @@ services:
       - api
     environment:
       NGINX_PROXY_URL: http://api:8082
+    expose:
+      - "80"
     ports:
       - "8081:80"
 
