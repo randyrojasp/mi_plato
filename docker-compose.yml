@@ -1,0 +1,22 @@
+services:
+  api:
+    build:
+      context: ./backend/Api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__Default: Data Source=/app/Data/plato.db
+    volumes:
+      - plato-data:/app/Data
+
+  frontend:
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+
+volumes:
+  plato-data:
