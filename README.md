@@ -33,7 +33,7 @@ Abre `http://localhost:5173`.
 docker compose up --build
 ```
 
-Abre `http://localhost:8080`.
+Abre `http://localhost:8081`.
 
 La base SQLite queda guardada en el volumen `plato-data`.
 
@@ -57,4 +57,4 @@ La base SQLite queda guardada en el volumen `plato-data`.
 
 ## VPS
 
-En una VPS, puedes poner Nginx o Caddy delante del puerto `8080` y activar HTTPS con tu dominio.
+En una VPS, puedes poner Nginx o Caddy delante del puerto `8081` y activar HTTPS con tu dominio.

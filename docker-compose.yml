@@ -16,9 +16,9 @@ services:
     depends_on:
       - api
     environment:
-      NGINX_PROXY_URL: http://api:8080
+      NGINX_PROXY_URL: http://api:8082
     ports:
-      - "8080:80"
+      - "8081:80"
 
 volumes:
   plato-data:
