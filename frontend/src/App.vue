@@ -47,6 +47,30 @@ const plateGroups = computed(() => {
   }))
 })
 
+function rankingTag(entry) {
+  if (!entry.rounds) {
+    return { label: 'Sin plato', class: 'bg-[#f5f0e6] text-[#8b7b68]' }
+  }
+
+  if (entry.lastScore >= 85) {
+    return { label: 'Plato estrella', class: 'bg-[#314b33] text-white' }
+  }
+
+  if (entry.lastScore >= 70) {
+    return { label: 'Muy saludable', class: 'bg-[#dff1df] text-[#314b33]' }
+  }
+
+  if (entry.lastScore >= 55) {
+    return { label: 'Buen intento', class: 'bg-[#fff1cf] text-[#7a4d10]' }
+  }
+
+  if (entry.lastScore >= 40) {
+    return { label: 'Puede mejorar', class: 'bg-[#ffe1cf] text-[#8c3d2d]' }
+  }
+
+  return { label: 'En progreso', class: 'bg-red-50 text-red-700' }
+}
+
 async function api(path, options = {}) {
   const response = await fetch(`${API_URL}${path}`, {
     headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
@@ -335,7 +359,12 @@ onMounted(async () => {
         <div v-for="(entry, index) in ranking" :key="entry.playerId" class="grid grid-cols-[2rem_1fr] items-center gap-3 rounded-2xl bg-[#fffaf1] p-3 sm:grid-cols-[2rem_1fr_auto]">
           <span class="font-black text-[#f1a33b]">{{ index + 1 }}</span>
           <span class="min-w-0">
-            <span class="block font-black">{{ entry.name }}</span>
+            <span class="flex flex-wrap items-center gap-2">
+              <span class="font-black">{{ entry.name }}</span>
+              <span class="rounded-full px-2 py-1 text-[0.68rem] font-black uppercase leading-none" :class="rankingTag(entry).class">
+                {{ rankingTag(entry).label }}
+              </span>
+            </span>
             <span class="block text-xs text-[#8b7b68]">{{ entry.rounds }} rondas / {{ entry.lastMessage }}</span>
           </span>
           <span class="col-span-2 text-right font-black sm:col-span-1">{{ entry.lastScore }} pts<br><small>{{ money.format(entry.coinsColones) }}</small></span>
