@@ -180,7 +180,7 @@ onMounted(async () => {
 <template>
   <main class="min-h-screen bg-[#f5f0e6] px-3 py-3 sm:px-6 sm:py-5">
     <section class="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-      <div class="rounded-[1.5rem] bg-[#314b33] p-4 text-white shadow-2xl shadow-black/20 sm:rounded-[2rem] sm:p-8">
+      <div class="min-w-0 rounded-[1.5rem] bg-[#314b33] p-4 text-white shadow-2xl shadow-black/20 sm:rounded-[2rem] sm:p-8">
         <p class="text-xs font-bold uppercase tracking-[0.22em] text-[#f6c65b] sm:text-sm sm:tracking-[0.28em]">Juego de clase</p>
         <h1 class="mt-3 text-4xl font-black leading-none sm:text-6xl">Mi Plato Tico</h1>
         <p class="mt-4 max-w-2xl text-base text-white/80 sm:text-lg">
@@ -203,7 +203,7 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="rounded-[1.5rem] border border-[#dfd2bd] bg-white p-4 shadow-xl shadow-black/10 sm:rounded-[2rem] sm:p-6">
+      <div class="min-w-0 rounded-[1.5rem] border border-[#dfd2bd] bg-white p-4 shadow-xl shadow-black/10 sm:rounded-[2rem] sm:p-6">
         <h2 class="text-2xl font-black text-[#314b33]">Entrada a la actividad</h2>
         <p class="mt-1 text-sm text-[#6d6255]">Crea una sala para proyectar el codigo o entra con el codigo del profesor.</p>
 
@@ -228,8 +228,8 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section v-if="player" class="mx-auto mt-4 grid max-w-6xl gap-4 sm:mt-5 sm:gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-      <div class="rounded-[1.5rem] bg-white p-4 shadow-xl shadow-black/10 sm:rounded-[2rem] sm:p-6">
+    <section v-if="player" class="mx-auto mt-4 grid max-w-6xl min-w-0 gap-4 sm:mt-5 sm:gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+      <div class="min-w-0 overflow-hidden rounded-[1.5rem] bg-white p-4 shadow-xl shadow-black/10 sm:rounded-[2rem] sm:p-6">
         <div class="grid gap-2 sm:flex sm:items-center sm:justify-between sm:gap-3">
           <div>
             <h2 class="text-2xl font-black text-[#314b33]">Mercado</h2>
@@ -272,14 +272,14 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="grid gap-5">
-        <div class="rounded-[1.5rem] bg-white p-4 shadow-xl shadow-black/10 sm:rounded-[2rem] sm:p-6">
+      <div class="grid min-w-0 gap-5">
+        <div class="min-w-0 rounded-[1.5rem] bg-white p-4 shadow-xl shadow-black/10 sm:rounded-[2rem] sm:p-6">
           <div class="grid gap-3 sm:flex sm:items-start sm:justify-between">
             <div>
               <h2 class="text-2xl font-black text-[#314b33]">Tu plato</h2>
               <p class="text-sm text-[#6d6255]">Gastado {{ money.format(spent) }} / queda {{ money.format(remaining) }}</p>
             </div>
-            <button class="rounded-2xl bg-[#f1a33b] px-4 py-3 font-black text-[#2f261d] disabled:opacity-40 sm:w-auto" :disabled="loading || !canSubmit" @click="submitPlate">
+            <button class="w-full rounded-2xl bg-[#f1a33b] px-4 py-3 font-black text-[#2f261d] disabled:opacity-40 sm:w-auto" :disabled="loading || !canSubmit" @click="submitPlate">
               Evaluar
             </button>
           </div>
