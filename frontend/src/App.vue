@@ -230,12 +230,12 @@ onMounted(async () => {
 
     <section v-if="player" class="mx-auto mt-4 grid max-w-6xl gap-4 sm:mt-5 sm:gap-5 lg:grid-cols-[0.95fr_1.05fr]">
       <div class="rounded-[1.5rem] bg-white p-4 shadow-xl shadow-black/10 sm:rounded-[2rem] sm:p-6">
-        <div class="flex items-center justify-between gap-3">
+        <div class="grid gap-2 sm:flex sm:items-center sm:justify-between sm:gap-3">
           <div>
             <h2 class="text-2xl font-black text-[#314b33]">Mercado</h2>
             <p class="text-sm text-[#6d6255]">Elige lo que pondras en el plato.</p>
           </div>
-          <button class="text-sm font-bold text-[#8c3d2d]" @click="leaveGame">Salir</button>
+          <button class="justify-self-start rounded-full bg-[#fff1e7] px-3 py-2 text-sm font-bold text-[#8c3d2d] sm:justify-self-auto sm:bg-transparent sm:px-0 sm:py-0" @click="leaveGame">Salir</button>
         </div>
 
         <div class="-mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
@@ -250,20 +250,24 @@ onMounted(async () => {
           </button>
         </div>
 
-        <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+        <div class="mt-4 grid gap-2 sm:grid-cols-2 sm:gap-3 lg:grid-cols-1">
           <button
             v-for="product in filteredProducts"
             :key="product.id"
-            class="grid grid-cols-[3rem_1fr] items-center gap-3 rounded-3xl border border-[#eee3d0] bg-[#fffaf1] p-3 text-left transition active:scale-[0.99] sm:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_auto]"
+            class="grid grid-cols-[2.75rem_1fr] gap-3 rounded-2xl border border-[#eee3d0] bg-[#fffaf1] p-3 text-left transition active:scale-[0.99] sm:grid-cols-[3.5rem_1fr] sm:rounded-3xl lg:grid-cols-[3.5rem_1fr_auto]"
             @click="addProduct(product)"
           >
-            <span class="grid h-12 w-12 place-items-center rounded-2xl bg-white font-black text-[#314b33] shadow-inner sm:h-14 sm:w-14">{{ product.emoji }}</span>
+            <span class="grid h-11 w-11 place-items-center rounded-2xl bg-white font-black text-[#314b33] shadow-inner sm:h-14 sm:w-14">{{ product.emoji }}</span>
             <span class="min-w-0">
-              <span class="block font-black text-[#2f261d]">{{ product.name }}</span>
-              <span class="block text-xs font-bold uppercase leading-snug text-[#8b7b68]">{{ product.kind }} / salud {{ product.health }} / quimicos {{ product.chemicals }}</span>
-              <span class="mt-1 block font-black text-[#314b33] lg:hidden">{{ money.format(product.priceColones) }}</span>
+              <span class="block truncate font-black text-[#2f261d] sm:whitespace-normal">{{ product.name }}</span>
+              <span class="mt-1 flex flex-wrap gap-1 text-[0.68rem] font-bold uppercase leading-snug text-[#8b7b68] sm:text-xs">
+                <span class="rounded-full bg-white px-2 py-0.5">{{ product.kind }}</span>
+                <span class="rounded-full bg-white px-2 py-0.5">Salud {{ product.health }}</span>
+                <span class="rounded-full bg-white px-2 py-0.5">Quimicos {{ product.chemicals }}</span>
+              </span>
+              <span class="mt-2 block font-black text-[#314b33] lg:hidden">{{ money.format(product.priceColones) }}</span>
             </span>
-            <span class="hidden font-black text-[#314b33] lg:block">{{ money.format(product.priceColones) }}</span>
+            <span class="hidden self-center text-right font-black text-[#314b33] lg:block">{{ money.format(product.priceColones) }}</span>
           </button>
         </div>
       </div>
@@ -280,15 +284,20 @@ onMounted(async () => {
             </button>
           </div>
 
-          <div class="mt-5 grid gap-3 sm:grid-cols-2">
-            <div v-for="group in plateGroups" :key="group.category" class="min-h-24 rounded-3xl border-2 border-dashed border-[#dfd2bd] bg-[#fffaf1] p-3 sm:min-h-28 sm:p-4">
-              <p class="font-black text-[#314b33]">{{ group.category }}</p>
-              <div v-if="group.items.length" class="mt-3 flex flex-wrap gap-2">
-                <button v-for="item in group.items" :key="item.product.id" class="rounded-full bg-white px-3 py-2 text-sm font-bold shadow-sm" @click="removeProduct(item.product.id)">
-                  {{ item.product.emoji }} {{ item.quantity }}x
+          <div class="mt-5 grid gap-2 sm:grid-cols-2 sm:gap-3">
+            <div v-for="group in plateGroups" :key="group.category" class="rounded-2xl border-2 border-dashed border-[#dfd2bd] bg-[#fffaf1] p-3 sm:min-h-28 sm:rounded-3xl sm:p-4">
+              <div class="flex items-center justify-between gap-3">
+                <p class="font-black text-[#314b33]">{{ group.category }}</p>
+                <span class="rounded-full bg-white px-2 py-1 text-xs font-black text-[#8b7b68]">{{ group.items.length }}</span>
+              </div>
+              <div v-if="group.items.length" class="mt-3 grid gap-2">
+                <button v-for="item in group.items" :key="item.product.id" class="grid grid-cols-[auto_1fr_auto] items-center gap-2 rounded-2xl bg-white px-3 py-2 text-left text-sm font-bold shadow-sm" @click="removeProduct(item.product.id)">
+                  <span>{{ item.product.emoji }}</span>
+                  <span class="truncate">{{ item.product.name }}</span>
+                  <span class="text-[#314b33]">{{ item.quantity }}x</span>
                 </button>
               </div>
-              <p v-else class="mt-3 text-sm text-[#8b7b68]">Vacio</p>
+              <p v-else class="mt-2 text-sm text-[#8b7b68]">Vacio</p>
             </div>
           </div>
 
