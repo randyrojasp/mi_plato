@@ -156,7 +156,7 @@ app.MapPost("/api/games/submit", async (SubmitGameRequest request, AppDbContext 
         return Results.BadRequest(new { message = "Uno o mas productos no existen." });
     }
 
-    var result = GameScoring.Calculate(request.Items, products, player.CurrentBudgetColones);
+    var result = GameScoring.Calculate(request.Items, products, player.Room.InitialBudgetColones);
     if (!result.CanAfford)
     {
         return Results.BadRequest(new { message = "El plato supera el presupuesto disponible." });
@@ -182,7 +182,7 @@ app.MapPost("/api/games/submit", async (SubmitGameRequest request, AppDbContext 
     };
 
     player.CoinsColones += result.CoinsEarnedColones;
-    player.CurrentBudgetColones = player.Room.InitialBudgetColones + player.CoinsColones;
+    player.CurrentBudgetColones = player.Room.InitialBudgetColones;
 
     db.Games.Add(game);
     await db.SaveChangesAsync();
@@ -195,15 +195,24 @@ app.MapGet("/api/rooms/{code}/ranking", async (string code, AppDbContext db) =>
     var roomCode = code.Trim().ToUpperInvariant();
     var ranking = await db.Players
         .Where(player => player.Room.Code == roomCode)
+        .Select(player => new
+        {
+            player.Id,
+            player.Name,
+            player.CoinsColones,
+            LastScore = player.Games.OrderByDescending(game => game.CreatedAt).Select(game => game.Score).FirstOrDefault(),
+            Rounds = player.Games.Count,
+            LastMessage = player.Games.OrderByDescending(game => game.CreatedAt).Select(game => game.Message).FirstOrDefault() ?? "Sin rondas"
+        })
+        .OrderByDescending(player => player.LastScore)
+        .ThenByDescending(player => player.CoinsColones)
         .Select(player => new RankingDto(
             player.Id,
             player.Name,
             player.CoinsColones,
-            player.Games.OrderByDescending(game => game.CreatedAt).Select(game => game.Score).FirstOrDefault(),
-            player.Games.Count,
-            player.Games.OrderByDescending(game => game.CreatedAt).Select(game => game.Message).FirstOrDefault() ?? "Sin rondas"))
-        .OrderByDescending(player => player.LastScore)
-        .ThenByDescending(player => player.CoinsColones)
+            player.LastScore,
+            player.Rounds,
+            player.LastMessage))
         .ToListAsync();
 
     return Results.Ok(ranking);

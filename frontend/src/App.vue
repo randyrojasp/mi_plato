@@ -24,7 +24,7 @@ const money = new Intl.NumberFormat('es-CR', {
   maximumFractionDigits: 0,
 })
 
-const currentBudget = computed(() => player.value?.currentBudgetColones ?? room.value?.initialBudgetColones ?? 0)
+const currentBudget = computed(() => room.value?.initialBudgetColones ?? player.value?.currentBudgetColones ?? 0)
 const spent = computed(() => cart.value.reduce((total, item) => total + item.product.priceColones * item.quantity, 0))
 const remaining = computed(() => currentBudget.value - spent.value)
 const canSubmit = computed(() => player.value && cart.value.length > 0 && remaining.value >= 0)
@@ -137,7 +137,12 @@ async function submitPlate() {
 
 async function refreshRanking() {
   if (!room.value?.code) return
-  ranking.value = await api(`/api/rooms/${room.value.code}/ranking`)
+  const roomCode = encodeURIComponent(room.value.code)
+  ranking.value = await api(`/api/rooms/${roomCode}/ranking?t=${Date.now()}`)
+}
+
+async function updateRanking() {
+  await run(refreshRanking)
 }
 
 function leaveGame() {
@@ -311,7 +316,9 @@ onMounted(async () => {
           <h2 class="text-2xl font-black text-[#314b33]">Ranking</h2>
           <p class="text-sm text-[#6d6255]">Sala {{ room.code }}. Se ordena por el ultimo puntaje.</p>
         </div>
-        <button class="rounded-2xl bg-[#f5f0e6] px-4 py-2 font-black text-[#314b33]" @click="refreshRanking">Actualizar</button>
+        <button class="rounded-2xl bg-[#f5f0e6] px-4 py-2 font-black text-[#314b33] disabled:opacity-50" :disabled="loading" @click="updateRanking">
+          {{ loading ? 'Actualizando...' : 'Actualizar' }}
+        </button>
       </div>
 
       <div class="mt-4 grid gap-2">
