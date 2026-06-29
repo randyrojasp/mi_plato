@@ -178,32 +178,32 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="min-h-screen bg-[#f5f0e6] px-4 py-5 sm:px-6">
+  <main class="min-h-screen bg-[#f5f0e6] px-3 py-3 sm:px-6 sm:py-5">
     <section class="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-      <div class="rounded-[2rem] bg-[#314b33] p-5 text-white shadow-2xl shadow-black/20 sm:p-8">
-        <p class="text-sm font-bold uppercase tracking-[0.28em] text-[#f6c65b]">Juego de clase</p>
+      <div class="rounded-[1.5rem] bg-[#314b33] p-4 text-white shadow-2xl shadow-black/20 sm:rounded-[2rem] sm:p-8">
+        <p class="text-xs font-bold uppercase tracking-[0.22em] text-[#f6c65b] sm:text-sm sm:tracking-[0.28em]">Juego de clase</p>
         <h1 class="mt-3 text-4xl font-black leading-none sm:text-6xl">Mi Plato Tico</h1>
         <p class="mt-4 max-w-2xl text-base text-white/80 sm:text-lg">
           Compra alimentos con presupuesto en colones, arma tu plato y gana monedas segun salud, balance y nivel de procesados.
         </p>
 
-        <div class="mt-6 grid gap-3 sm:grid-cols-3">
-          <div class="rounded-2xl bg-white/10 p-4">
+        <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div class="rounded-2xl bg-white/10 p-3 sm:p-4">
             <p class="text-xs uppercase text-white/60">Sala</p>
-            <p class="text-2xl font-black">{{ room?.code || 'Nueva' }}</p>
+            <p class="text-xl font-black sm:text-2xl">{{ room?.code || 'Nueva' }}</p>
           </div>
-          <div class="rounded-2xl bg-white/10 p-4">
+          <div class="rounded-2xl bg-white/10 p-3 sm:p-4">
             <p class="text-xs uppercase text-white/60">Presupuesto</p>
-            <p class="text-2xl font-black">{{ money.format(currentBudget) }}</p>
+            <p class="text-xl font-black sm:text-2xl">{{ money.format(currentBudget) }}</p>
           </div>
-          <div class="rounded-2xl bg-white/10 p-4">
+          <div class="col-span-2 rounded-2xl bg-white/10 p-3 sm:col-span-1 sm:p-4">
             <p class="text-xs uppercase text-white/60">Jugador</p>
-            <p class="truncate text-2xl font-black">{{ player?.name || 'Sin entrar' }}</p>
+            <p class="truncate text-xl font-black sm:text-2xl">{{ player?.name || 'Sin entrar' }}</p>
           </div>
         </div>
       </div>
 
-      <div class="rounded-[2rem] border border-[#dfd2bd] bg-white p-5 shadow-xl shadow-black/10 sm:p-6">
+      <div class="rounded-[1.5rem] border border-[#dfd2bd] bg-white p-4 shadow-xl shadow-black/10 sm:rounded-[2rem] sm:p-6">
         <h2 class="text-2xl font-black text-[#314b33]">Entrada a la actividad</h2>
         <p class="mt-1 text-sm text-[#6d6255]">Crea una sala para proyectar el codigo o entra con el codigo del profesor.</p>
 
@@ -228,8 +228,8 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section v-if="player" class="mx-auto mt-5 grid max-w-6xl gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-      <div class="rounded-[2rem] bg-white p-5 shadow-xl shadow-black/10 sm:p-6">
+    <section v-if="player" class="mx-auto mt-4 grid max-w-6xl gap-4 sm:mt-5 sm:gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+      <div class="rounded-[1.5rem] bg-white p-4 shadow-xl shadow-black/10 sm:rounded-[2rem] sm:p-6">
         <div class="flex items-center justify-between gap-3">
           <div>
             <h2 class="text-2xl font-black text-[#314b33]">Mercado</h2>
@@ -238,7 +238,7 @@ onMounted(async () => {
           <button class="text-sm font-bold text-[#8c3d2d]" @click="leaveGame">Salir</button>
         </div>
 
-        <div class="mt-4 flex gap-2 overflow-x-auto pb-2">
+        <div class="-mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
           <button
             v-for="category in categories"
             :key="category"
@@ -250,37 +250,38 @@ onMounted(async () => {
           </button>
         </div>
 
-        <div class="mt-4 grid gap-3">
+        <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
           <button
             v-for="product in filteredProducts"
             :key="product.id"
-            class="grid grid-cols-[3.5rem_1fr_auto] items-center gap-3 rounded-3xl border border-[#eee3d0] bg-[#fffaf1] p-3 text-left transition active:scale-[0.99]"
+            class="grid grid-cols-[3rem_1fr] items-center gap-3 rounded-3xl border border-[#eee3d0] bg-[#fffaf1] p-3 text-left transition active:scale-[0.99] sm:grid-cols-[3.5rem_1fr] lg:grid-cols-[3.5rem_1fr_auto]"
             @click="addProduct(product)"
           >
-            <span class="grid h-14 w-14 place-items-center rounded-2xl bg-white font-black text-[#314b33] shadow-inner">{{ product.emoji }}</span>
-            <span>
+            <span class="grid h-12 w-12 place-items-center rounded-2xl bg-white font-black text-[#314b33] shadow-inner sm:h-14 sm:w-14">{{ product.emoji }}</span>
+            <span class="min-w-0">
               <span class="block font-black text-[#2f261d]">{{ product.name }}</span>
-              <span class="block text-xs font-bold uppercase text-[#8b7b68]">{{ product.kind }} / salud {{ product.health }} / quimicos {{ product.chemicals }}</span>
+              <span class="block text-xs font-bold uppercase leading-snug text-[#8b7b68]">{{ product.kind }} / salud {{ product.health }} / quimicos {{ product.chemicals }}</span>
+              <span class="mt-1 block font-black text-[#314b33] lg:hidden">{{ money.format(product.priceColones) }}</span>
             </span>
-            <span class="font-black text-[#314b33]">{{ money.format(product.priceColones) }}</span>
+            <span class="hidden font-black text-[#314b33] lg:block">{{ money.format(product.priceColones) }}</span>
           </button>
         </div>
       </div>
 
       <div class="grid gap-5">
-        <div class="rounded-[2rem] bg-white p-5 shadow-xl shadow-black/10 sm:p-6">
-          <div class="flex items-start justify-between gap-3">
+        <div class="rounded-[1.5rem] bg-white p-4 shadow-xl shadow-black/10 sm:rounded-[2rem] sm:p-6">
+          <div class="grid gap-3 sm:flex sm:items-start sm:justify-between">
             <div>
               <h2 class="text-2xl font-black text-[#314b33]">Tu plato</h2>
               <p class="text-sm text-[#6d6255]">Gastado {{ money.format(spent) }} / queda {{ money.format(remaining) }}</p>
             </div>
-            <button class="rounded-2xl bg-[#f1a33b] px-4 py-3 font-black text-[#2f261d] disabled:opacity-40" :disabled="loading || !canSubmit" @click="submitPlate">
+            <button class="rounded-2xl bg-[#f1a33b] px-4 py-3 font-black text-[#2f261d] disabled:opacity-40 sm:w-auto" :disabled="loading || !canSubmit" @click="submitPlate">
               Evaluar
             </button>
           </div>
 
           <div class="mt-5 grid gap-3 sm:grid-cols-2">
-            <div v-for="group in plateGroups" :key="group.category" class="min-h-28 rounded-3xl border-2 border-dashed border-[#dfd2bd] bg-[#fffaf1] p-4">
+            <div v-for="group in plateGroups" :key="group.category" class="min-h-24 rounded-3xl border-2 border-dashed border-[#dfd2bd] bg-[#fffaf1] p-3 sm:min-h-28 sm:p-4">
               <p class="font-black text-[#314b33]">{{ group.category }}</p>
               <div v-if="group.items.length" class="mt-3 flex flex-wrap gap-2">
                 <button v-for="item in group.items" :key="item.product.id" class="rounded-full bg-white px-3 py-2 text-sm font-bold shadow-sm" @click="removeProduct(item.product.id)">
@@ -294,14 +295,14 @@ onMounted(async () => {
           <p v-if="remaining < 0" class="mt-4 rounded-2xl bg-red-50 p-3 text-sm font-bold text-red-700">Te pasaste del presupuesto.</p>
         </div>
 
-        <div v-if="result" class="rounded-[2rem] bg-[#314b33] p-5 text-white shadow-xl shadow-black/10 sm:p-6">
+        <div v-if="result" class="rounded-[1.5rem] bg-[#314b33] p-4 text-white shadow-xl shadow-black/10 sm:rounded-[2rem] sm:p-6">
           <p class="text-sm font-bold uppercase tracking-[0.24em] text-[#f6c65b]">Resultado ronda {{ result.round }}</p>
           <div class="mt-3 flex items-end justify-between gap-4">
             <h2 class="text-5xl font-black">{{ result.score }}/100</h2>
             <p class="text-right text-xl font-black">+{{ money.format(result.coinsEarnedColones) }}</p>
           </div>
           <p class="mt-3 text-white/85">{{ result.message }}</p>
-          <div class="mt-4 grid grid-cols-3 gap-2 text-center text-sm">
+          <div class="mt-4 grid grid-cols-3 gap-2 text-center text-xs sm:text-sm">
             <span class="rounded-2xl bg-white/10 p-3">Salud<br><b>{{ result.healthTotal }}</b></span>
             <span class="rounded-2xl bg-white/10 p-3">Quimicos<br><b>{{ result.chemicalTotal }}</b></span>
             <span class="rounded-2xl bg-white/10 p-3">Balance<br><b>{{ result.balanceScore }}</b></span>
@@ -310,25 +311,25 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section v-if="room" class="mx-auto mt-5 max-w-6xl rounded-[2rem] bg-white p-5 shadow-xl shadow-black/10 sm:p-6">
-      <div class="flex items-center justify-between gap-3">
+    <section v-if="room" class="mx-auto mt-4 max-w-6xl rounded-[1.5rem] bg-white p-4 shadow-xl shadow-black/10 sm:mt-5 sm:rounded-[2rem] sm:p-6">
+      <div class="grid gap-3 sm:flex sm:items-center sm:justify-between">
         <div>
           <h2 class="text-2xl font-black text-[#314b33]">Ranking</h2>
           <p class="text-sm text-[#6d6255]">Sala {{ room.code }}. Se ordena por el ultimo puntaje.</p>
         </div>
-        <button class="rounded-2xl bg-[#f5f0e6] px-4 py-2 font-black text-[#314b33] disabled:opacity-50" :disabled="loading" @click="updateRanking">
+        <button class="rounded-2xl bg-[#f5f0e6] px-4 py-3 font-black text-[#314b33] disabled:opacity-50 sm:py-2" :disabled="loading" @click="updateRanking">
           {{ loading ? 'Actualizando...' : 'Actualizar' }}
         </button>
       </div>
 
       <div class="mt-4 grid gap-2">
-        <div v-for="(entry, index) in ranking" :key="entry.playerId" class="grid grid-cols-[2rem_1fr_auto] items-center gap-3 rounded-2xl bg-[#fffaf1] p-3">
+        <div v-for="(entry, index) in ranking" :key="entry.playerId" class="grid grid-cols-[2rem_1fr] items-center gap-3 rounded-2xl bg-[#fffaf1] p-3 sm:grid-cols-[2rem_1fr_auto]">
           <span class="font-black text-[#f1a33b]">{{ index + 1 }}</span>
-          <span>
+          <span class="min-w-0">
             <span class="block font-black">{{ entry.name }}</span>
             <span class="block text-xs text-[#8b7b68]">{{ entry.rounds }} rondas / {{ entry.lastMessage }}</span>
           </span>
-          <span class="text-right font-black">{{ entry.lastScore }} pts<br><small>{{ money.format(entry.coinsColones) }}</small></span>
+          <span class="col-span-2 text-right font-black sm:col-span-1">{{ entry.lastScore }} pts<br><small>{{ money.format(entry.coinsColones) }}</small></span>
         </div>
         <p v-if="!ranking.length" class="rounded-2xl bg-[#fffaf1] p-4 text-center text-sm text-[#8b7b68]">Aun no hay jugadores.</p>
       </div>
