@@ -17,6 +17,8 @@ const error = ref('')
 const selectedCategory = ref('Todos')
 
 const categories = ['Todos', 'Verdura', 'Fruta', 'Cereal', 'Proteina', 'Procesado', 'Agua']
+const minRoomBudget = 5000
+const maxRoomBudget = 7500
 
 const money = new Intl.NumberFormat('es-CR', {
   style: 'currency',
@@ -92,9 +94,11 @@ async function loadProducts() {
 
 async function createRoom() {
   await run(async () => {
+    const initialBudgetColones = Math.floor(Math.random() * (maxRoomBudget - minRoomBudget + 1)) + minRoomBudget
+
     room.value = await api('/api/rooms', {
       method: 'POST',
-      body: JSON.stringify({ name: adminName.value, initialBudgetColones: 5000 }),
+      body: JSON.stringify({ name: adminName.value, initialBudgetColones }),
     })
     roomCodeInput.value = room.value.code
     localStorage.setItem('plato-room', JSON.stringify(room.value))
